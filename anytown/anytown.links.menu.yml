@@ -1,0 +1,5 @@
+anytown.weather:
+  title: Weather
+  description: Check this week's weather.
+  menu_name: main
+  route_name: anytown.weather_page
