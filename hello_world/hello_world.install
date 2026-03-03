@@ -1,0 +1,17 @@
+<?php
+
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+
+/**
+ * Implémentation de hook_install().
+ */
+function hello_world_install()
+{
+  $menu_link = MenuLinkContent::create([
+    'title' => 'Hello World Page',
+    'link' => ['uri' => 'internal:/hello'],
+    'menu_name' => 'admin',
+    'weight' => 0,
+  ]);
+  $menu_link->save();
+}

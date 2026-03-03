@@ -1,0 +1,20 @@
+hello_world.admin:
+  title: 'Hello module settings'
+  description: 'example of how to make an admin settings page link'
+  route_name: hello_world.content
+  parent: system.admin_config_development
+  weight: 100
+
+hello_world.admin2:
+  title: 'External link example'
+  description: 'example of how to make an admin settings page link'
+  url: 'http://module.local/admin'
+  parent: system.admin_config_development
+  weight: 100
+
+hello_world.admin3:
+  title: 'Hello module'
+  description: 'My custom category'
+  route_name: system.admin_config_helloworld
+  parent: system.admin_config
+  weight: 100

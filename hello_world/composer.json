@@ -1,0 +1,6 @@
+{
+  "name": "drupal/hello_world",
+  "type": "drupal-module",
+  "description": "Hello World custom module",
+  "require": {}
+}

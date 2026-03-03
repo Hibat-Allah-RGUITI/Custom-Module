@@ -1,0 +1,10 @@
+{# Output string variable. #}
+  <p>{{ custom_string }}</p>
+
+{# Output values from the array. #}
+  <strong>{{ custom_data.name }}:</strong> {{ custom_data.age }}<br>
+
+{# Output array in for loop. #}
+{% for key,value in custom_data %}
+  <strong>{{ key }}:</strong> {{ value }}<br>
+{% endfor %}
