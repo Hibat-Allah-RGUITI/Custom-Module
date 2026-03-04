@@ -82,6 +82,8 @@ class WeatherPage extends ControllerBase
                         ],
                     ],
                 ];
+                $highest = max($highest, $high);
+                $lowest = min($lowest, $low);
             }
             $weather_forecast = [
                 '#type' => 'table',
@@ -95,16 +97,23 @@ class WeatherPage extends ControllerBase
                     'class' => ['weather_page--forecast-table'],
                 ],
             ];
+
+            $short_forecast = [
+                '#type' => 'markup',
+                '#markup' => "The high for the weekend is {$highest} and the low is {$lowest}.",
+            ];
         } else {
             $weather_forecast = ['#markup' => "<p>Could not get the weather forecast. Dress for anything.</p>"];
         }
 
         $build = [
-            'weather_intro' => [
+            '#theme' => 'weather_page',
+            '#weather_intro' => [
                 '#markup' => "<p>Check out this weekend's weather forecast and come prepared. The market is mostly outside, and takes place rain or shine.</p>",
             ],
-            'weather_forecast' => $weather_forecast,
-            'weather_closures' => [
+            '#weather_forecast' => $weather_forecast,
+            '#short_forecast' => $short_forecast,
+            '#weather_closures' => [
                 '#theme' => 'item_list',
                 '#title' => 'Weather related closures',
                 '#items' => [
