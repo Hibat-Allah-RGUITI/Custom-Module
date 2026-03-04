@@ -5,28 +5,41 @@ declare(strict_types=1);
 namespace Drupal\anytown\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use Drupal\Core\Logger\RfcLogLevel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Drupal\anytown\ForecastClientInterface;
 
 class WeatherPage extends ControllerBase
 {
 
-    private $httpClient;
+    /**
+     * Forecast API client.
+     *
+     * @var \Drupal\anytown\ForecastClientInterface
+     */
+    private $forecastClient;
 
-    private $logger;
+    /**
+     * WeatherPage controller constructor.
+     *
+     * @param \Drupal\anytown\ForecastClientInterface $forecast_client
+     *   Forecast API client service.
+     */
 
-    public function __construct(ClientInterface $http_client)
+    //private $httpClient;
+
+    //private $logger;
+
+    public function __construct(ForecastClientInterface $forecast_client)
     {
-        $this->httpClient = $http_client;
-        $this->logger = $this->getLogger('anytown');
+        $this->forecastClient = $forecast_client;
     }
+
 
     public static function create(ContainerInterface $container)
     {
         return new self(
-            $container->get('http_client')
+            $container->get('anytown.forecast_client')
         );
     }
 
@@ -34,32 +47,37 @@ class WeatherPage extends ControllerBase
     public function build(string $style): array
     {
         $style = (in_array($style, ['short', 'extended'])) ? $style : 'short';
-        $ur = 'https://raw.githubusercontent.com/DrupalizeMe/module-developer-guide-demo-site/main/backups/weather_forecast.json';
-        $data = NULL;
+        $url = 'https://raw.githubusercontent.com/DrupalizeMe/module-developer-guide-demo-site/main/backups/weather_forecast.json';
+        /*$data = NULL;
 
         try {
             $response = $this->httpClient->request('GET', $ur);
             $data = json_decode($response->getBody()->getContents());
         } catch (RequestException $e) {
             $this->logger->log(RfcLogLevel::ERROR, 'Failed to fetch weather data: @message', ['@message' => $e->getMessage()]);
-        }
+        }*/
 
-        if ($data) {
-            $forrecast = '<ul>';
-            foreach ($data->list as $day) {
-                $weekday = ucfirst($day->day);
-                $description = array_shift($day->weather)->description;
-                $high = round(($day->main->temp_max - 273.15) * 9 / 5 + 32);
-                $low = round(($day->main->temp_min - 273.15) * 9 / 5 + 32);
+        $forecast_data = $this->forecastClient->getForecastData($url);
+        if ($forecast_data) {
+            $forecast = '<ul>';
+            foreach ($forecast_data as $item) {
+                [
+                    'weekday' => $weekday,
+                    'description' => $description,
+                    'high' => $high,
+                    'low' => $low,
+                ] = $item;
                 $forecast .= "<li>$weekday will be <em>$description</em> with a high of $high and a low of $low.</li>";
             }
-            $forrecast .= '</ul>';
+            $forecast .= '</ul>';
         } else {
-            $forrecast = '<p>Unable to fetch weather data at this time.</p>';
+            $forecast = '<p>Could not get the weather forecast. Dress for anything.</p>';
         }
 
         $output = "<p>Check out this weekend's weather forecast and come prepared. The market is mostly outside, and takes place rain or shine.</p>";
         $output .= $forecast;
+        $output .= '<h3>Weather related closures</h3></h3><ul><li>Ice rink closed until winter - please stay off while we prepare it.</li><li>Parking behind Apple Lane is still closed from all the rain last week.</li></ul>';
+
 
         return [
             '#markup' => $output,
