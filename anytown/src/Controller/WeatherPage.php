@@ -25,7 +25,7 @@ class WeatherPage extends ControllerBase
 
     public static function create(ContainerInterface $container)
     {
-        return new static(
+        return new self(
             $container->get('http_client')
         );
     }
