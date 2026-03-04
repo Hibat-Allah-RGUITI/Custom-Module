@@ -10,7 +10,7 @@
 
         // Create and configure a button to toggle between thet wo.
         const toggleButton = document.createElement('button');
-        toggleButton.textContent = 'Toggle extended forecast';
+        toggleButton.textContent = Drupal.t('Toggle extended forecast');
         toggleButton.addEventListener('click', function () {
           long.classList.toggle('visually-hidden');
           short.classList.toggle('visually-hidden');

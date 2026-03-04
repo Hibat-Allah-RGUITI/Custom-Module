@@ -6,11 +6,13 @@ namespace Drupal\anytown\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 use Drupal\anytown\ForecastClientInterface;
 
 class WeatherPage extends ControllerBase
 {
+    use StringTranslationTrait;
 
     /**
      * Forecast API client.
@@ -60,6 +62,8 @@ class WeatherPage extends ControllerBase
         $forecast_data = $this->forecastClient->getForecastData($url);
 
         $rows = [];
+        $highest = 0;
+        $lowest = 0;
         if ($forecast_data) {
             foreach ($forecast_data as $item) {
                 [
@@ -100,10 +104,16 @@ class WeatherPage extends ControllerBase
 
             $short_forecast = [
                 '#type' => 'markup',
-                '#markup' => "The high for the weekend is {$highest} and the low is {$lowest}.",
+                '#markup' => '<p>' . $this->t(
+                    'The high for the weekend is @highest and the low is @lowest.',
+                    [
+                        '@highest' => $highest,
+                        '@lowest' => $lowest,
+                    ]
+                ) . '</p>',
             ];
         } else {
-            $weather_forecast = ['#markup' => "<p>Could not get the weather forecast. Dress for anything.</p>"];
+            $weather_forecast = ['#markup' => "<p>" . $this->t('Could not get the weather forecast. Dress for anything.') . "</p>"];
         }
 
         $build = [
@@ -112,16 +122,16 @@ class WeatherPage extends ControllerBase
                 'library' => ['anytown/forecast'],
             ],
             '#weather_intro' => [
-                '#markup' => "<p>Check out this weekend's weather forecast and come prepared. The market is mostly outside, and takes place rain or shine.</p>",
+                '#markup' => "<p>" . $this->t("Check out this weekend's weather forecast and come prepared. The market is mostly outside, and takes place rain or shine.") . "</p>",
             ],
             '#weather_forecast' => $weather_forecast,
             '#short_forecast' => $short_forecast,
             '#weather_closures' => [
                 '#theme' => 'item_list',
-                '#title' => 'Weather related closures',
+                '#title' => $this->t('Weather related closures'),
                 '#items' => [
-                    'Ice rink closed until winter - please stay off while we prepare it.',
-                    'Parking behind Apple Lane is still closed from all the rain last weekend.',
+                    $this->t('Ice rink closed until winter - please stay off while we prepare it.'),
+                    $this->t('Parking behind Apple Lane is still closed from all the rain last weekend.'),
                 ],
             ],
         ];
