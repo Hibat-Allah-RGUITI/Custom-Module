@@ -25,6 +25,8 @@ class AnytownTheme
                     'weather_forecast' => '',
                     'short_forecast' => '',
                     'weather_closures' => '',
+                    'node_alias' => '',
+                    'node_link' => '',
                 ],
             ],
         ];

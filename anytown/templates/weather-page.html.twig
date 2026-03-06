@@ -31,4 +31,26 @@
       {{ weather_closures }}
     </div>
   {% endif %}
+
+  <div class="weather_page--front-check">
+  <h2>{{"Is this a front page"|t}}</h2>
+  {# Affichage conditionnel #}
+{% if is_front %}
+  <p>This is the front page!</p>
+{% else %}
+  <p>This is not the front page.</p>
+{% endif %}
 </div>
+
+<div class="weather_page--node-info" style="margin-top: 20px; padding: 10px; border: 1px dashed #ccc;">
+    <h2>{{ "Node Information"|t }}</h2>
+    <div class="alias">
+      <strong>{{ "Alias path:"|t }}</strong> {{ node_alias }}
+    </div>
+    <div class="link">
+      <strong>{{ "Direct link:"|t }}</strong> {{ node_link }}
+    </div>
+  </div>
+
+</div>
+
