@@ -37,7 +37,7 @@ class WeatherPage extends ControllerBase
     {
         return new self(
             $container->get('anytown.forecast_client'),
-            $container->get('path_alias.manager')
+            $container->get('path_alias.manager'),
         );
     }
 
