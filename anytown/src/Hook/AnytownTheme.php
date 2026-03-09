@@ -29,6 +29,14 @@ class AnytownTheme
                     'node_link' => '',
                 ],
             ],
+
+            'anytown_selected_node' => [
+                'template' => 'selected-node',
+                'variables' => [
+                    'selected_title' => '',
+                    'other_titles' => [],
+                ],
+            ],
         ];
     }
 }

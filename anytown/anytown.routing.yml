@@ -15,3 +15,12 @@ anytown.settings:
     _form: 'Drupal\anytown\Form\SettingsForm'
   requirements:
     _permission: 'administer site configuration'
+
+
+anytown.node_select_form:
+  path: '/admin/config/anytown/node-select'
+  defaults:
+    _form: '\Drupal\anytown\Form\NodeSelectForm'
+    _title: 'Select a node'
+  requirements:
+    _permission: 'administer site configuration'

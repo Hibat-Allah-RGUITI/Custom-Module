@@ -1,0 +1,13 @@
+<div class="selected-node-block">
+  <h3>Selected Node:</h3>
+  <p>{{ selected_title }}</p>
+
+  {% if other_titles %}
+    <h4>Other Nodes of Same Type:</h4>
+    <ul>
+      {% for title in other_titles %}
+        <li>{{ title }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>
