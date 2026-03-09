@@ -6,3 +6,12 @@ anytown.wather.page:
     style: 'short'
   requirements:
     _permission: 'view weekly_weather'
+
+
+anytown.settings:
+  path: '/amdin/config/system/anytown'
+  defaults:
+    _title: 'Anytown Settings'
+    _form: 'Drupal\anytown\Form\SettingsForm'
+  requirements:
+    _permission: 'administer site configuration'
